@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.mechanisms.StrafeBotMap;
 
-@Disabled
 @TeleOp
 public class StrafeBot extends OpMode {
     StrafeBotMap strafe = new StrafeBotMap();
@@ -19,6 +18,8 @@ public class StrafeBot extends OpMode {
     @Override
     public void loop() {
         if (gamepad1.left_stick_y < 0) {
+            strafe.setLeftBackSpeed(0.5);
+            strafe.setRightBackSpeed(0.5);
             strafe.setLeftFrontSpeed(0.5);
             strafe.setRightFrontSpeed(0.5);
         }
@@ -38,13 +39,13 @@ public class StrafeBot extends OpMode {
             strafe.setLeftBackSpeed(0.5);
             strafe.setRightBackSpeed(-0.5);
         }
-        else if (gamepad1.left_bumper) {
+        else if (gamepad1.right_bumper) {
             strafe.setLeftFrontSpeed(0.5);
             strafe.setRightFrontSpeed(-0.5);
             strafe.setLeftBackSpeed(-0.5);
             strafe.setRightBackSpeed(0.5);
         }
-        else if (gamepad1.right_bumper) {
+        else if (gamepad1.left_bumper) {
             strafe.setLeftFrontSpeed(-0.5);
             strafe.setRightFrontSpeed(0.5);
             strafe.setLeftBackSpeed(0.5);
