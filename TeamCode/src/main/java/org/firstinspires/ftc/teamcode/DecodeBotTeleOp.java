@@ -5,8 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.mechanisms.DecodeBotMap;
 
 @TeleOp
-public class DecodeBotOpMode extends OpMode {
+public class DecodeBotTeleOp extends OpMode {
     DecodeBotMap decode = new DecodeBotMap();
+    double throttle, turn;
 
     @Override
     public void init() {
@@ -16,30 +17,11 @@ public class DecodeBotOpMode extends OpMode {
     @Override
     public void loop() {
         // code for driving
-        if (gamepad1.left_stick_y > 0) {
-            decode.setLeftDriveSpeed(1);
-            decode.setRightDriveSpeed(1);
-        }
-        else if (gamepad1.left_stick_y < 0) {
-            decode.setLeftDriveSpeed(-1);
-            decode.setRightDriveSpeed(-1);
-        }
-        else if (gamepad1.right_stick_x < 0) {
-            decode.setLeftDriveSpeed(-1);
-            decode.setRightDriveSpeed(1);
-        }
-        else if (gamepad1.right_stick_x > 0) {
-            decode.setLeftDriveSpeed(1);
-            decode.setRightDriveSpeed(-1);
-        }
-        else {
-            decode.setLeftDriveSpeed(0);
-            decode.setRightDriveSpeed(0);
-        }
+        throttle = -gamepad1.left_stick_y;
+        turn = gamepad1.left_stick_x;
 
-
-
-
+        decode.drive(throttle, turn);
+        
         // code for shooting modes
 
         if (gamepad1.dpad_right) {

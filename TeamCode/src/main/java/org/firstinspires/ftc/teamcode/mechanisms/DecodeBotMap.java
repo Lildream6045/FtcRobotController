@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -11,12 +12,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 public class DecodeBotMap {
-    private DcMotor leftDrive;
-    private DcMotor rightDrive;
-    private DcMotor launcher;
-    private Servo leftServoPos;
-    private Servo rightServoPos;
+    private DcMotor leftDrive,rightDrive, launcher;
+    private Servo leftServoPos, rightServoPos;
     private IMU imu;
+    private HuskyLens huskyLens;
 
     public void init(HardwareMap hwMap) {
         leftDrive = hwMap.get(DcMotor.class, "left_drive");
@@ -25,6 +24,7 @@ public class DecodeBotMap {
         rightServoPos = hwMap.get(Servo.class, "right_servo");
         imu = hwMap.get(IMU.class, "imu");
         launcher = hwMap.get(DcMotor.class, "launcher");
+        huskyLens = hwMap.get(HuskyLens.class, "huskylens");
         rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         rightServoPos.setDirection(Servo.Direction.REVERSE);
         leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -41,11 +41,18 @@ public class DecodeBotMap {
 
         imu.initialize(new IMU.Parameters(RevOrientation));
     }
-    public void setLeftDriveSpeed (double leftDriveSpeed) {
-        leftDrive.setPower(leftDriveSpeed);
-    }
-    public void setRightDriveSpeed (double rightDriveSpeed) {
-        rightDrive.setPower(rightDriveSpeed);
+
+    public void drive (double throttle, double turn) {
+        double leftPower = throttle + turn / 2;
+        double rightPower = throttle - turn / 2;
+        double largest = Math.max(Math.abs(leftPower), Math.abs(rightPower));
+        if (largest > 1.0) {
+            leftPower /= largest;
+            rightPower /= largest;
+        }
+
+        leftDrive.setPower(leftPower);
+        rightDrive.setPower(rightPower);
     }
     public void setLauncherSpeed (double launcherSpeed) {
         launcher.setPower(launcherSpeed);
