@@ -26,6 +26,7 @@ public class DecodeBotMap {
         imu = hwMap.get(IMU.class, "imu");
         launcher = hwMap.get(DcMotor.class, "launcher");
         rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightServoPos.setDirection(Servo.Direction.REVERSE);
         leftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -40,41 +41,37 @@ public class DecodeBotMap {
 
         imu.initialize(new IMU.Parameters(RevOrientation));
     }
-
     public void setLeftDriveSpeed (double leftDriveSpeed) {
         leftDrive.setPower(leftDriveSpeed);
     }
-
     public void setRightDriveSpeed (double rightDriveSpeed) {
         rightDrive.setPower(rightDriveSpeed);
     }
-
     public void setLauncherSpeed (double launcherSpeed) {
         launcher.setPower(launcherSpeed);
     }
-
     public void setLeftServoPos (double leftServoAngle) {
         leftServoPos.setPosition(leftServoAngle);
     }
-
     public void setRightServoPos (double rightServoAngle) {
         rightServoPos.setPosition(rightServoAngle);
     }
-
     public double getHeading () {
         return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
-
     public double getLeftDrivePower() {
         return leftDrive.getPower();
     }
-
     public double getRightDrivePower() {
         return rightDrive.getPower();
     }
-
     public double getLauncherPower() {
         return launcher.getPower();
     }
-
+    public double getLeftServoAngle () {
+        return leftServoPos.getPosition();
+    }
+    public double getRightServoAngle () {
+        return rightServoPos.getPosition();
+    }
 }
